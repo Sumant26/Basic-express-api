@@ -1,41 +1,73 @@
-import {users} from "../data/users.js";
+import User from "../models/userModel.js";
 
-export const getAllUsers = (req, res) => { 
+// @desc    Get all users
+// @route   GET /users
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find();
     res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
-export const getUserById = (req, res) => {
-    const id = req.params.id;
-    const user = users.find((u) => u.id === id);
-    if(!user) return res.status(404).json({message : "User not found"});
-     res.json(user);
-};
-
-export const createUser = (req, res) => {
-    const { name } = req.body;
-    if(!name) return res.status(400).json({message : "Name is required"});
-
-    const newUser = {id : users.length + 1, name };
-    users.push(newUser);
-    res.status(201).json(newUser);
-};
-
-export const updateUser = (req, res) => {
-    const id = Number(req.params.id);
-    const index = users.find((u) => u.id === id);
-    if(!user) return res.status(404).json({message :"User not found"});
-
-    user.name = req.body.name || user.name;
+// @desc    Get user by ID
+// @route   GET /users/:id
+export const getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
     res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
-export const deleteUser = (req, res) => {
-    const id = Number(req.params.id);
-    const index = users.findIndex((u) => u.id === id);
+// @desc    Create new user
+// @route   POST /users
+export const createUser = async (req, res) => {
+  try {
+    const { name } = req.body;
+    if (!name) return res.status(400).json({ message: "Name is required" });
 
-    if(index === -1) return res.status(404).json({message : "User not found"});
-
-    users.splice(index, 1);
-    res.json({message : "User deleted successfully"});
+    const user = new User({ name });
+    const savedUser = await user.save();
+    res.status(201).json(savedUser);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
+// @desc    Update existing user
+// @route   PUT /users/:id
+export const updateUser = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      { name },
+      { new: true }
+    );
+
+    if (!updatedUser)
+      return res.status(404).json({ message: "User not found" });
+
+    res.json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Delete user
+// @route   DELETE /users/:id
+export const deleteUser = async (req, res) => {
+  try {
+    const deletedUser = await User.findByIdAndDelete(req.params.id);
+    if (!deletedUser)
+      return res.status(404).json({ message: "User not found" });
+
+    res.json({ message: "User deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

@@ -19,10 +19,14 @@ basic-express-api/
     │   └── userRoutes.js     # Route definitions for user endpoints
     │
     ├── controllers/
-    │   └── userController.js # CRUD logic and request handling
+    │   └── userController.js # Handles CRUD logic and request responses
     │
-    └── data/
-        └── users.js          # In-memory "database" (mock data)
+    ├── data/
+    │   └── users.js          # In-memory "database" (mock data)
+    │
+    └── config/
+        └── db.js             # (Optional) Future MongoDB connection setup
+
 
 ```
 
