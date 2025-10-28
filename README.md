@@ -9,9 +9,21 @@ This project demonstrates how to create, read, update, and delete (CRUD) data us
 ```
 basic-express-api/
 │
-├── server.js # Main Express server file
-├── package.json # Project metadata & dependencies
-└── README.md # Project documentation
+├── package.json              # Project metadata & dependencies
+├── server.js                 # Entry point - starts the Express server
+│
+└── src/
+    ├── app.js                # Initializes app, middleware, and routes
+    │
+    ├── routes/
+    │   └── userRoutes.js     # Route definitions for user endpoints
+    │
+    ├── controllers/
+    │   └── userController.js # CRUD logic and request handling
+    │
+    └── data/
+        └── users.js          # In-memory "database" (mock data)
+
 ```
 
 ---
