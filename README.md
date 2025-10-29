@@ -9,23 +9,31 @@ This project demonstrates how to create, read, update, and delete (CRUD) data us
 ```
 basic-express-api/
 │
-├── package.json              # Project metadata & dependencies
-├── server.js                 # Entry point - starts the Express server
+├── package.json               # Project metadata & dependencies
+├── server.js                  # Entry point - starts the Express server
 │
 └── src/
-    ├── app.js                # Initializes app, middleware, and routes
+    ├── app.js                 # Initializes app, middleware, and routes
     │
     ├── routes/
-    │   └── userRoutes.js     # Route definitions for user endpoints
+    │   └── userRoutes.js      # Route definitions for user endpoints
     │
     ├── controllers/
-    │   └── userController.js # Handles CRUD logic and request responses
+    │   └── userController.js  # Handles CRUD logic and request responses
     │
     ├── data/
-    │   └── users.js          # In-memory "database" (mock data)
+    │   └── users.js           # In-memory "database" (mock data)
     │
-    └── config/
-        └── db.js             # (Optional) Future MongoDB connection setup
+    ├── config/
+    │   ├── db.js              # MongoDB connection setup
+    │   └── logger.js          # Centralized Winston logger configuration
+    │
+    ├── middleware/
+    │   └── errorMiddleware.js # Error and 404 handling middleware
+    │
+    └── utils/
+        └── morganMiddleware.js # Request logging middleware using Morgan + Winston
+
 
 
 ```
