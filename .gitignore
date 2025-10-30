@@ -1,0 +1,21 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+logs/
+*.log
+
+# Build artifacts
+dist/
+coverage/
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# IDE configs
+.vscode/
+.idea/
