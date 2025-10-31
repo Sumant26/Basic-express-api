@@ -1,46 +1,53 @@
 import winston from "winston";
-import fs from "fs";
+import DailyRotateFile from "winston-daily-rotate-file";
 import path from "path";
+import fs from "fs";
 
-// Ensure logs folder exists
-const logDir = path.resolve("logs");
+// Ensure logs directory exists
+const logDir = "logs";
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir);
 }
 
-// Create the Winston logger instance
+// Common log format
+const logFormat = winston.format.combine(
+  winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
+  winston.format.printf(({ timestamp, level, message }) => {
+    return `[${timestamp}] ${level}: ${message}`;
+  })
+);
+
+// Daily rotation settings for info logs
+const infoTransport = new DailyRotateFile({
+  filename: path.join(logDir, "info-%DATE%.log"),
+  datePattern: "YYYY-MM-DD",
+  zippedArchive: true,
+  maxSize: "20m",
+  maxFiles: "14d", // keep logs for 14 days
+  level: "info",
+});
+
+// Daily rotation settings for error logs
+const errorTransport = new DailyRotateFile({
+  filename: path.join(logDir, "error-%DATE%.log"),
+  datePattern: "YYYY-MM-DD",
+  zippedArchive: true,
+  maxSize: "20m",
+  maxFiles: "30d", // keep errors longer
+  level: "error",
+});
+
+// Create logger
 const logger = winston.createLogger({
   level: "info",
-  format: winston.format.combine(
-    winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
-    winston.format.printf(({ timestamp, level, message }) => {
-      return `[${timestamp}] ${level}: ${message}`;
-    })
-  ),
+  format: logFormat,
   transports: [
-    // Write all logs with level `error` or lower to `error.log`
-    new winston.transports.File({
-      filename: path.join(logDir, "error.log"),
-      level: "error",
-    }),
-
-    // Write all logs with level `info` or lower to `info.log`
-    new winston.transports.File({
-      filename: path.join(logDir, "info.log"),
-      level: "info",
-    }),
-
-    // Also output logs to console with colors
     new winston.transports.Console({
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.printf(({ timestamp, level, message }) => {
-          return `[${timestamp}] ${level}: ${message}`;
-        })
-      ),
+      format: winston.format.combine(winston.format.colorize(), logFormat),
     }),
+    infoTransport,
+    errorTransport,
   ],
 });
 
-// Export the logger instance
 export default logger;
