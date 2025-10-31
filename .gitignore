@@ -1,21 +1,19 @@
-# Node modules
+# Ignore all log files
+logs/*.log
+
+# Ignore rotated logs (from winston-daily-rotate-file)
+logs/*.gz
+
+# Keep the logs folder itself (via .gitkeep)
+!logs/.gitkeep
+
+# Node dependencies
 node_modules/
 
 # Environment variables
 .env
 
-# Logs
-logs/
-*.log
-
-# Build artifacts
-dist/
-coverage/
-
-# OS specific
-.DS_Store
-Thumbs.db
-
-# IDE configs
-.vscode/
-.idea/
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
