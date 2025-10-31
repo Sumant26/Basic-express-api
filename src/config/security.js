@@ -6,7 +6,7 @@ import cors from "cors";
 import dotenv from "dotenv"
 
 
-Dotenv.config()
+dotenv.config()
 
 const allowedOrigin = process.env.CORS_ORIGIN || "http://localhost:3000";
 /**
@@ -59,5 +59,7 @@ export const securityMiddleware = (app) => {
         message: "Too many requests from this IP, please try again later.",
     });
 
-    app.use(limiter());
+    app.use(limiter);
 };
+
+export default securityMiddleware;
