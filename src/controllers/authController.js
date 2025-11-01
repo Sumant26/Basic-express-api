@@ -1,6 +1,8 @@
 import { generateToken } from "../utils/tokenUtils.js";
 import logger from "../config/logger.js";
 import User from "../models/userModel.js";
+import bcrypt from "bcryptjs";
+
 
 // @desc    Register new user
 // @route   POST /auth/register
@@ -15,8 +17,13 @@ export const register = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
+    // Hash password before saving
+    const salt = await bycrypt.genSalt(10);
+    const hashedPassword = await bycrypt.hash(password, salt);
+
+
     // Create user
-    const newUser = await User.create({ name, email, password });
+    const newUser = await User.create({ name, email, hashedPassword });
     logger.info(`🆕 New user registered: ${email}`);
 
     // Generate JWT token
