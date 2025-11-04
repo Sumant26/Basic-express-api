@@ -8,8 +8,9 @@ import config from "./src/config/envConfig.js"; // ✅ Import config
 // Connect to MongoDB
 connectDB();
 
-app.listen(config.port, ()=> {
-logger.info(`🚀 Server running on port ${config.port}`)});
+app.listen(config.port, () => {
+    logger.info(`🚀 Server running on port ${config.port}`)
+});
 
 
 
