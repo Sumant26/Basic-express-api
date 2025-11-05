@@ -18,8 +18,8 @@ export const register = async (req, res) => {
     }
 
     // Hash password before saving
-    const salt = await bycrypt.genSalt(10);
-    const hashedPassword = await bycrypt.hash(password, salt);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
 
     // Create user
